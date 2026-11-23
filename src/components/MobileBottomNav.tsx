@@ -5,9 +5,9 @@ import { Compass, Images, ScrollText, MessageSquareHeart } from "lucide-react";
 
 const NAV_ITEMS = [
     { label: "Logbook", href: "#surat", icon: Compass },
-    { label: "Arsip", href: "#galeri", icon: Images },
     { label: "Gulungan", href: "#amplop", icon: ScrollText },
     { label: "Kru", href: "#catatan-murid", icon: MessageSquareHeart },
+    { label: "Arsip", href: "#galeri", icon: Images },
 ];
 
 export default function MobileBottomNav() {
