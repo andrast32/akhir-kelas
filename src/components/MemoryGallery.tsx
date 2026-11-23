@@ -24,16 +24,16 @@ export default function MemoryGallery() {
         <div>
           <span className="inline-flex items-center gap-1.5 text-xs tracking-[0.2em] uppercase text-[#991B1B] font-bold">
             <Compass className="w-3.5 h-3.5" />
-            <span>02 / Arsip Petualangan Enam Kru</span>
+            <span>02 / Arsip seluruh kelas</span>
           </span>
           <WordRevealTitle
             as="h2"
-            text="Potret Momen di Tiap Pulau Kelas"
+            text="Potret Momen di Tiap Kelas"
             className="font-serif text-3xl md:text-5xl font-bold text-[#2B1E16] mt-2 leading-tight"
           />
         </div>
         <p className="text-[#5A4634] text-sm max-w-xs leading-relaxed">
-          Pilih kru kelasmu untuk menyaring arsip foto, lalu klik poster untuk
+          Pilih kelasmu untuk menyaring arsip foto, lalu klik poster untuk
           membaca kisah di baliknya.
         </p>
       </div>

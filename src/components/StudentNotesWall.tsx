@@ -281,7 +281,7 @@ export default function StudentNotesWall() {
         <div>
           <span className="inline-flex items-center gap-1.5 text-xs tracking-[0.2em] uppercase text-[#991B1B] font-bold">
             <Anchor className="w-3.5 h-3.5" />
-            <span>04 / Papan Kru &amp; Catatan Pelayaran</span>
+            <span>04 / Kenangan &amp; Catatan Perjalanan</span>
           </span>
           <WordRevealTitle
             as="h2"
@@ -290,7 +290,7 @@ export default function StudentNotesWall() {
           />
         </div>
         <p className="text-[#5A4634] text-sm max-w-xs leading-relaxed">
-          Semua catatan dan foto langsung tertempel di sini. Beri tanda
+          Semua catatan dan foto langsung tertempel di sini. <br /> Beri tanda
           suka atau tulis balasan secara anonim untuk rekan satu kelasmu.
         </p>
       </div>
@@ -339,7 +339,7 @@ export default function StudentNotesWall() {
 
         <div className="mb-4">
           <label className="block text-[11px] font-bold text-[#6D5640] uppercase tracking-wider mb-1.5">
-            Pesan &amp; Kesan Selama Pelayaran
+            Pesan &amp; Kesan Selama Pembelajaran
           </label>
           <textarea
             rows={3}
