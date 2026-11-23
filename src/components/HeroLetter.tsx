@@ -28,8 +28,8 @@ export default function HeroLetter() {
   const scrollToSection = (selector: string) => {
     const el = document.querySelector(selector) as HTMLElement | null;
     if (!el) return;
-    if (window.lenis) {
-      window.lenis.scrollTo(el, { offset: -20, duration: 1.4 });
+    if (window.__lenis) {
+      window.__lenis.scrollTo(el, { offset: -20, duration: 1.4 });
     } else {
       el.scrollIntoView({ behavior: "smooth" });
     }

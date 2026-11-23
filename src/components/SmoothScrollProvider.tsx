@@ -9,7 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 declare global {
     interface Window {
-        lenis?: Lenis;
+        __lenis?: Lenis;
     }
 }
 
@@ -25,7 +25,7 @@ export default function SmoothScrollProvider({
             smoothWheel: true,
         });
 
-        window.lenis = lenis;
+        window.__lenis = lenis;
         lenis.on("scroll", ScrollTrigger.update);
 
         const tickerCallback = (time: number) => {
@@ -61,7 +61,7 @@ export default function SmoothScrollProvider({
             document.removeEventListener("click", handleAnchorClick);
             gsap.ticker.remove(tickerCallback);
             lenis.destroy();
-            delete window.lenis;
+            delete window.__lenis;
         };
     }, []);
 

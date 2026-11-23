@@ -15,8 +15,8 @@ export default function MobileBottomNav() {
         const el = document.querySelector(href) as HTMLElement | null;
         if (!el) return;
 
-        if (window.lenis) {
-            window.lenis.scrollTo(el, { offset: -16, duration: 1.35 });
+        if (window.__lenis) {
+            window.__lenis.scrollTo(el, { offset: -16, duration: 1.35 });
         } else {
             el.scrollIntoView({ behavior: "smooth" });
         }
