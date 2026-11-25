@@ -29,10 +29,15 @@ const ROTATION_CLASSES = [
   "sm:rotate-2",
 ];
 
+const MAX_WORDS = 50;
+
 export default function StudentNotesWall() {
   const [notes, setNotes] = useState<StudentNote[]>([]);
   const [comments, setComments] = useState<Record<number, NoteComment[]>>({});
   const [likedIds, setLikedIds] = useState<number[]>([]);
+  const [expandedNoteIds, setExpandedNoteIds] = useState<Record<number, boolean>>(
+    {}
+  );
   const [openComments, setOpenComments] = useState<Record<number, boolean>>({});
   const [commentTexts, setCommentTexts] = useState<Record<number, string>>({});
   const [sendingCommentId, setSendingCommentId] = useState<number | null>(null);
@@ -281,17 +286,17 @@ export default function StudentNotesWall() {
         <div>
           <span className="inline-flex items-center gap-1.5 text-xs tracking-[0.2em] uppercase text-[#991B1B] font-bold">
             <Anchor className="w-3.5 h-3.5" />
-            <span>04 / Kenangan &amp; Catatan Perjalanan</span>
+            <span>04 / Papan Kru &amp; Catatan Pelayaran</span>
           </span>
           <WordRevealTitle
             as="h2"
-            text="Suara & Poster Kenangan"
+            text="Suara & Poster Kenangan Kru"
             className="font-serif text-3xl md:text-5xl font-bold text-[#2B1E16] mt-2 leading-tight"
           />
         </div>
         <p className="text-[#5A4634] text-sm max-w-xs leading-relaxed">
-          Semua catatan dan foto langsung tertempel di sini. <br /> Beri tanda
-          suka atau tulis balasan secara anonim untuk rekan satu kelasmu.
+          Semua catatan dan foto kru langsung tertempel di sini. Beri tanda
+          suka atau tulis balasan anonim untuk rekan satu kapalmu.
         </p>
       </div>
 
@@ -308,12 +313,12 @@ export default function StudentNotesWall() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
           <div>
             <label className="block text-[11px] font-bold text-[#6D5640] uppercase tracking-wider mb-1.5">
-              Nama / Panggilan
+              Nama Kru / Panggilan
             </label>
             <input
               type="text"
               required
-              placeholder="Contoh: Kuncen 8C"
+              placeholder="Contoh: Raka Pratama"
               value={studentName}
               onChange={(e) => setStudentName(e.target.value)}
               className="w-full px-4 py-3 sm:py-2.5 rounded-xl border border-[#C8B28E] bg-[#F3E9D2]/50 text-sm text-[#2B1E16] focus:outline-none focus:ring-2 focus:ring-[#991B1B]"
@@ -339,7 +344,7 @@ export default function StudentNotesWall() {
 
         <div className="mb-4">
           <label className="block text-[11px] font-bold text-[#6D5640] uppercase tracking-wider mb-1.5">
-            Pesan &amp; Kesan Selama Pembelajaran
+            Pesan &amp; Kesan Selama Pelayaran
           </label>
           <textarea
             rows={3}
@@ -367,7 +372,7 @@ export default function StudentNotesWall() {
               className="w-full sm:w-auto inline-flex items-center justify-center sm:justify-start gap-2 px-4 py-2.5 rounded-xl border-2 border-dashed border-[#B89F78] bg-[#F3E9D2]/45 text-[#5A4634] text-xs font-semibold hover:bg-[#EFE0C2] hover:border-[#991B1B] hover:text-[#991B1B] transition cursor-pointer"
             >
               <ImagePlus className="w-4 h-4" />
-              <span>Tambah Foto Poster (Opsional, Maks. 3MB)</span>
+              <span>Tambah Foto Poster Kru (Opsional, Maks. 3MB)</span>
             </label>
           ) : (
             <div className="relative inline-block">
@@ -437,16 +442,16 @@ export default function StudentNotesWall() {
       {loading ? (
         <div className="text-center py-12 text-[#6D5640] flex items-center justify-center gap-2">
           <Loader2 className="w-5 h-5 animate-spin" />
-          <span>Memuat catatan...</span>
+          <span>Memuat catatan kru...</span>
         </div>
       ) : notes.length === 0 ? (
         <div className="text-center py-14 bg-[#FBF6EA]/70 rounded-3xl border-2 border-dashed border-[#C8B28E]">
           <MessageSquareHeart className="w-8 h-8 text-[#8A7056] mx-auto mb-2" />
           <p className="text-[#423224] font-semibold">
-            Belum ada catatan yang tertempel saat ini.
+            Belum ada catatan kru yang tertempel saat ini.
           </p>
           <p className="text-[#7A634E] text-sm mt-1">
-            Jadilah yang pertama yang menulis kesan di atas!
+            Jadilah kru pertama yang menulis kesan di atas!
           </p>
         </div>
       ) : (
@@ -458,6 +463,14 @@ export default function StudentNotesWall() {
               const isCommentOpen = !!openComments[note.id];
               const currentText = commentTexts[note.id] || "";
               const rotation = ROTATION_CLASSES[idx % ROTATION_CLASSES.length];
+
+              const words = note.message.trim().split(/\s+/);
+              const isLong = words.length > MAX_WORDS;
+              const isExpanded = !!expandedNoteIds[note.id];
+              const displayedMessage =
+                isLong && !isExpanded
+                  ? `${words.slice(0, MAX_WORDS).join(" ")}...`
+                  : note.message;
 
               return (
                 <motion.article
@@ -502,8 +515,23 @@ export default function StudentNotesWall() {
                   )}
 
                   <p className="text-[#2B1E16] text-sm md:text-[15px] leading-relaxed whitespace-pre-line">
-                    &ldquo;{note.message}&rdquo;
+                    &ldquo;{displayedMessage}&rdquo;
                   </p>
+
+                  {isLong && (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setExpandedNoteIds((prev) => ({
+                          ...prev,
+                          [note.id]: !prev[note.id],
+                        }))
+                      }
+                      className="mt-1.5 inline-block text-xs font-bold text-[#991B1B] hover:underline cursor-pointer"
+                    >
+                      {isExpanded ? "Sembunyikan" : "Read more"}
+                    </button>
+                  )}
 
                   <div className="mt-4 pt-3 border-t border-[#D8C5A5] flex items-center justify-between">
                     <div>
